@@ -22,14 +22,14 @@ class m170324_175223_create_comment_table extends Migration
 
         // create index for column 'user_id''
         $this->createIndex(
-            'idx-post-user_id',
+            'idx-comment-user_id',
             'comment',
             'user_id'
         );
 
         // add foreign key for table 'user'
         $this->addForeignKey(
-            'fk-post-user_id',
+            'fk-comment-user_id',
             'comment',
             'user_id',
             'user',
@@ -39,14 +39,14 @@ class m170324_175223_create_comment_table extends Migration
 
         // create index for column 'article_id''
         $this->createIndex(
-            'idx-article_id',
+            'idx-comment-article_id',
             'comment',
             'article_id'
         );
 
         // add foreign key for table 'article'
         $this->addForeignKey(
-            'fk-article_id',
+            'fk-comment-article_id',
             'comment',
             'article_id',
             'article',

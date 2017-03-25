@@ -18,16 +18,16 @@ class m170324_175241_create_article_tag_table extends Migration
             'tag_id' => $this->integer(),
         ]);
 
-        // create index for column 'user_id''
+        // create index for column 'article_id''
         $this->createIndex(
-            'tag_article_article_id',
+            'idx-article_tag-article_id',
             'article_tag',
             'article_id'
         );
 
-        // add foreign key for table 'user'
+        // add foreign key for table 'article'
         $this->addForeignKey(
-            'tag_article_article_id',
+            'fk-article_tag-article_id',
             'article_tag',
             'article_id',
             'article',
@@ -35,16 +35,16 @@ class m170324_175241_create_article_tag_table extends Migration
             'CASCADE'
         );
 
-        // create index for column 'user_id''
+        // create index for column 'tag_id''
         $this->createIndex(
-            'idx-tag_id',
+            'idx-article_tag-tag_id',
             'article_tag',
             'tag_id'
         );
 
-        // add foreign key for table 'user'
+        // add foreign key for table 'tag'
         $this->addForeignKey(
-            'fk-tag_id',
+            'fk-article_tag-tag_id',
             'article_tag',
             'tag_id',
             'tag',
