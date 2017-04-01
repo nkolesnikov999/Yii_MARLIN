@@ -7,9 +7,9 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\Article;
+use app\models\Category;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use yii\data\Pagination;
 
 class SiteController extends Controller
 {
@@ -62,27 +62,20 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        
+        $data = Article::getAll(1);
 
-        // build a DB query to get all articles with status = 1
-        $query = Article::find();
+        $popular = Article::getPopular();
 
-        // get the total number of articles (but do not fetch the article data yet)
-        $count = $query->count();
+        $recent = Article::getRecent();
 
-        // create a pagination object with the total count
-        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 1]);
-
-        // limit the query using the pagination and retrieve the articles
-        $articles = $query->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
-
-
+        $categories = Category::getAll();
 
         return $this->render('index', [
-            'articles' => $articles,
-            'pagination' => $pagination,
+            'articles' => $data['articles'],
+            'pagination' => $data['pagination'],
+            'popular' => $popular,
+            'recent' => $recent,
+            'categories' => $categories,
         ]);
     }
 
@@ -155,4 +148,5 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
 }
