@@ -10,6 +10,7 @@ use app\models\Article;
 use app\models\Category;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\data\Pagination;
 
 class SiteController extends Controller
 {
@@ -79,14 +80,51 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionView()
+    public function actionView($id)
     {
-        return $this->render('single');
+        $article = Article::findOne($id);
+        $popular = Article::getPopular();
+        $recent = Article::getRecent();
+        $categories = Category::getAll();
+        return $this->render('single', [
+            'article' => $article,
+            'popular' => $popular,
+            'recent' => $recent,
+            'categories' => $categories,
+        ]);
     }
 
-    public function actionCategory()
+    public function actionCategory($id)
     {
-        return $this->render('category');
+        // build a DB query to get all articles with status = 1
+        $query = Article::find()->where(['category_id' => $id]);
+
+        // get the total number of articles (but do not fetch the article data yet)
+        $count = $query->count();
+
+        // create a pagination object with the total count
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
+
+        // limit the query using the pagination and retrieve the articles
+        $articles = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        $data['pagination'] = $pagination;
+        $data['articles'] = $articles;
+
+        $popular = Article::getPopular();
+        $recent = Article::getRecent();
+        $categories = Category::getAll();
+
+
+        return $this->render('category', [
+            'articles' =>  $data['articles'],
+            'pagination' => $data['pagination'],
+            'popular' => $popular,
+            'recent' => $recent,
+            'categories' => $categories,
+        ]);
     }
 
     /**
