@@ -43,6 +43,7 @@ class Article extends \yii\db\ActiveRecord
             [['title', 'description', 'content'], 'string'],
             [['date'], 'date', 'format' => 'php:Y-m-d'],
             [['date'], 'default', 'value' => date('Y-m-d')],
+            [['category_id'], 'default', 'value' => 1],
             [['title'], 'string', 'max' => 255]
         ];
     }
@@ -176,5 +177,15 @@ class Article extends \yii\db\ActiveRecord
     {
         $this->user_id = Yii::$app->user->id;
         return $this->save();
+    }
+
+    public function getComments()
+    {
+        return $this->hasMany(Comment::classname(), ['article_id' => 'id']);
+    }
+
+    public function getArticleComments()
+    {
+        return $this->getComments()->where(['status'=>1])->all();
     }
 }
