@@ -13,7 +13,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="leave-comment mr0">
     <div class="row">
-        <div class="col-md-10 col-md-offset-2"
+        <div class="col-md-2">
+             <!-- Put this script tag to the <head> of your page -->
+            <script type="text/javascript" src="//vk.com/js/api/openapi.js?143"></script>
+
+            <script type="text/javascript">
+            VK.init({apiId: 5967501});
+            </script>
+
+            <!-- Put this div tag to the place, where Auth block will be -->
+            <div id="vk_auth"></div>
+            <script type="text/javascript">
+            VK.Widgets.Auth("vk_auth", {authUrl: '/auth/login-vk'});
+            </script>
+        </div>
+        <div class="col-md-8"
             <div class="site-login">
                 <h1><?= Html::encode($this->title) ?></h1>
 
@@ -49,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     To modify the username/password, please check out the code <code>app\models\User::$users</code>.
                 </div>
             </div>
-        ></div>
+        </div>
     </div>
 </div>
 
